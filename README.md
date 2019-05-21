@@ -4,7 +4,7 @@
 ### /!\ This "hello-world" uses a [custom build](https://github.com/mvilledieu/three.js/tree/dev/build) of [three.js](https://github.com/mrdoob/three.js) and works only with [Lumin 0.96.0](https://creator.magicleap.com/downloads/lumin-os) /!\
 
 - Tested only with on Magic Leap Helio - Lumin OS 0.96.0 (The current WebXR interface in Helio is based on the version in Chrome version 73)
-- Make sure to use this [custom build]([https://github.com/mvilledieu/three.js/tree/dev/build](https://github.com/mvilledieu/three.js/tree/dev/build) in your projects.
+- Make sure to use this [custom build](https://github.com/mvilledieu/three.js/tree/dev/build) in your projects.
 
 To try it out on device open [helio](https://www.magicleap.com/experiences/helio) and go to that link:
 [https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/](https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/)
