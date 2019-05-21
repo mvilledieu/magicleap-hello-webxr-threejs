@@ -9,7 +9,7 @@
 To try it out on device open [helio](https://www.magicleap.com/experiences/helio) and go to that link:
 [https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/](https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/)
 
-## local development
+## local server
 
 For local testing you'll need to generate a `cert.pem` and `key.pem` and put them at the root of your folder. http-server needs it to serve your files over https (Required by WebXR).
 
