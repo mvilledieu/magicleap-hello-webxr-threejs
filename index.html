@@ -21,7 +21,8 @@
 
 	<script>
 		let container;
-		let camera, scene, raycaster, renderer, mesh;
+		let camera, scene, raycaster, renderer, mesh, controller, group;
+		const loader = new THREE.GLTFLoader();
 
 		init();
 		animate();
@@ -42,6 +43,12 @@
 			mesh.position.z = -1;
 			scene.add(mesh);
 
+
+			const pivot = mesh.clone();
+			pivot.scale.set(0.05, 0.05, 0.05);
+			pivot.position.z = 0;
+			pivot.geometry.translate(-0.1, 0, 0);
+
 			renderer = new THREE.WebGLRenderer({
 				antialias: true
 			});
@@ -51,16 +58,15 @@
 
 			window.addEventListener('resize', onWindowResize, false);
 
-			const controller = renderer.vr.getController(0);
-			controller.addEventListener('selectstart', onSelectStart);
-			controller.addEventListener('selectend', onSelectEnd);
+			group = renderer.vr.getController(0);
+			group.addEventListener('selectstart', onSelectStart);
+			group.addEventListener('selectend', onSelectEnd);
 			// controller.addEventListener( 'select', onSelect );
-
-			const loader = new THREE.GLTFLoader();
-			const scenes = loader.load('./controller.glb', 
+			
+			loader.load('./controller.glb', 
 				scenes => {
-					controller.add(scenes.scene)
-					scene.add(controller);
+					group.add(scenes.scene);
+					scene.add(group);
 				}
 			);
 
