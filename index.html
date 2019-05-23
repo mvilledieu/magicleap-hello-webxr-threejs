@@ -71,12 +71,9 @@
         }
 
         function addMeshes() {
-            const light = new THREE.PointLight(0xffffff, 1, 100);
-            light.position.set(1, 0, 1);
-            scene.add(light);
 
-            const directionalLight = new THREE.HemisphereLight(0x999999, 0x444444, 1);
-            scene.add(directionalLight);
+            const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+            scene.add(hemisphereLight);
 
             const sphereGeo = new THREE.IcosahedronBufferGeometry(0.1, 1);
             const sphereMat = new THREE.MeshPhongMaterial({
