@@ -2,106 +2,139 @@
 <html lang="en">
 
 <head>
-	<title>MagicLeap three.js WebXR - Hello World</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<script src="./three.js/build/three.js"></script>
-	<script src="./three.js/examples/js/loaders/GLTFLoader.js"></script>
-	<script src="./WebXR.js"></script>
-	<style>
-		body {
-			margin: 0px;
-			padding: 0px;
-			overflow: hidden;
-		}
-	</style>
+    <title>MagicLeap three.js WebXR - Hello World</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="./three.js/build/three.js"></script>
+    <script src="./three.js/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="./WebXR.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
 
-	<script>
-		let container;
-		let camera, scene, raycaster, renderer, mesh, controller, group;
-		const loader = new THREE.GLTFLoader();
+    <script>
+        let camera,
+            scene,
+            renderer,
+            controllerGroup,
+            container,
+            sphereMesh,
+            torusMesh,
+            coneMesh,
+            ticker = 0;
+        const loader = new THREE.GLTFLoader();
 
-		init();
-		animate();
+        init();
+        animate();
 
-		function init() {
+        function init() {
 
-			container = document.createElement('div');
-			document.body.appendChild(container);
+            container = document.createElement('div');
+            document.body.appendChild(container);
 
-			scene = new THREE.Scene();
-			scene.background = new THREE.Color(0x505050);
-			camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
-			scene.add(camera);
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x444444);
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
+            scene.add(camera);
 
-			const mat = new THREE.MeshNormalMaterial();
-			const geom = new THREE.BoxBufferGeometry(0.1, 0.1, 0.1);
-			mesh = new THREE.Mesh(geom, mat);
-			mesh.position.z = -1;
-			scene.add(mesh);
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
 
+            addMeshes();
 
-			const pivot = mesh.clone();
-			pivot.scale.set(0.05, 0.05, 0.05);
-			pivot.position.z = 0;
-			pivot.geometry.translate(-0.1, 0, 0);
+            controllerGroup = renderer.vr.getController(0);
+            controllerGroup.addEventListener('selectstart', onSelectStart);
+            controllerGroup.addEventListener('selectend', onSelectEnd);
+            controllerGroup.addEventListener('select', onSelect);
 
-			renderer = new THREE.WebGLRenderer({
-				antialias: true
-			});
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			container.appendChild(renderer.domElement);
+            loader.load('./controller.glb',
+                scenes => {
+                    controllerGroup.add(scenes.scene);
+                    scene.add(controllerGroup);
+                }
+            );
 
-			window.addEventListener('resize', onWindowResize, false);
+            document.body.appendChild(WebXR(renderer));
 
-			group = renderer.vr.getController(0);
-			group.addEventListener('selectstart', onSelectStart);
-			group.addEventListener('selectend', onSelectEnd);
-			// controller.addEventListener( 'select', onSelect );
-			
-			loader.load('./controller.glb', 
-				scenes => {
-					group.add(scenes.scene);
-					scene.add(group);
-				}
-			);
+            window.addEventListener('resize', onWindowResize, false);
+        }
 
-			const webxr = new WebXR(renderer);
-			document.body.appendChild(webxr.getButton());
-		}
+        function addMeshes() {
+            const light = new THREE.PointLight(0xffffff, 1, 100);
+            light.position.set(1, 0, 1);
+            scene.add(light);
 
-		function onSelect() {
-			console.log('Controller: select');
-		}
+            const directionalLight = new THREE.HemisphereLight(0x999999, 0x444444, 1);
+            scene.add(directionalLight);
 
-		function onSelectStart() {
-			console.log('Controller: select start');
-		}
+            const sphereGeo = new THREE.IcosahedronBufferGeometry(0.1, 1);
+            const sphereMat = new THREE.MeshPhongMaterial({
+                color: 0xff7500,
+                flatShading: true
+            });
+            sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
+            sphereMesh.position.set(-0.5, 0, -1);
+            scene.add(sphereMesh);
 
-		function onSelectEnd() {
-			console.log('Controller: select end');
-		}
+            const torusGeo = new THREE.TorusBufferGeometry(0.08, 0.03, 32, 60);
+            const torusMat = new THREE.MeshPhongMaterial({
+                color: 0xf65275
+            });
+            torusMesh = new THREE.Mesh(torusGeo, torusMat);
+            torusMesh.position.z -= 1;
+            scene.add(torusMesh);
 
-		function onWindowResize() {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-		}
+            const coneGeo = new THREE.ConeBufferGeometry(0.1, 0.2, 8);
+            const coneMat = new THREE.MeshPhongMaterial({
+                color: 0xb896d4,
+                flatShading: true
+            });
+            coneMesh = new THREE.Mesh(coneGeo, coneMat);
+            coneMesh.position.set(0.5, 0, -1);
+            scene.add(coneMesh);
+        }
 
-		function animate() {
-			renderer.setAnimationLoop(render);
-		}
+        function onSelect() {
+            console.log('Controller: select');
+        }
 
-		function render() {
-			mesh.rotation.x += 0.01;
-			mesh.rotation.y -= 0.01;
-			renderer.render(scene, camera);
-		}
-	</script>
+        function onSelectStart() {
+            console.log('Controller: select start');
+        }
+
+        function onSelectEnd() {
+            console.log('Controller: select end');
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            renderer.setAnimationLoop(render);
+        }
+
+        function render() {
+            ticker += 0.01;
+            sphereMesh.rotation.set(ticker, -ticker, 0);
+            torusMesh.rotation.set(-ticker, ticker, 0);
+            coneMesh.rotation.set(ticker, -ticker, 0);
+            renderer.render(scene, camera);
+        }
+    </script>
 </body>
 
 </html>

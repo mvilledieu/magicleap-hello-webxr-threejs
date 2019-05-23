@@ -1,65 +1,71 @@
-class WebXR {
+/**
+ * Based on @tojiro's vr-samples-utils.js
+ * and @mrdoob WebVR.js
+ */
 
-	constructor(renderer, options) {
-		this.renderer = renderer;
-		this.currentSession = null;
+function WebXR(renderer, options) {
 
-		if (options && options.frameOfReferenceType) {
-			this.renderer.vr.setFrameOfReferenceType(options.frameOfReferenceType);
-		}
+	let currentSession = null;
+	const button = createButton();
 
-		this.button = this.createButton();
-
-		if ('xr' in navigator && 'supportsSessionMode' in navigator.xr) {
-			navigator.xr.supportsSessionMode('immersive-ar') //MagicLeap
-				.then(this.showEnterXR)
-				.catch(this.showXRNotFound);
-		} else {
-			this.showXRNotFound();
-		}
+	if (options && options.frameOfReferenceType) {
+		renderer.vr.setFrameOfReferenceType(options.frameOfReferenceType);
 	}
 
-	onSessionStarted = session => {
-		session.addEventListener('end', this.onSessionEnded);
-
-		this.renderer.vr.setSession(session);
-		this.renderer.vr.enabled = true;
-		this.button.textContent = 'EXIT WEBXR';
-
-		this.currentSession = session;
+	if ('xr' in navigator && 'supportsSessionMode' in navigator.xr) {
+		navigator.xr.supportsSessionMode('immersive-ar')
+			.then(showEnterXR)
+			.catch(showXRNotFound);
+	} else {
+		showXRNotFound();
 	}
 
-	onSessionEnded = () => {
-		this.currentSession.removeEventListener('end', this.onSessionEnded);
+	function onSessionStarted(session) {
+		session.addEventListener('end', onSessionEnded);
 
-		this.renderer.vr.setSession(null);
-		this.renderer.vr.enabled = false;
-		this.button.textContent = 'ENTER WEBXR';
+		renderer.vr.setSession(session);
+		renderer.vr.enabled = true;
+		button.textContent = 'EXIT WEBXR';
 
-		this.currentSession = null;
+		currentSession = session;
 	}
 
-	showEnterXR = device => {
-		if (device) this.renderer.vr.setDevice(device);
-		this.button.textContent = 'ENTER WEBXR';
-		this.button.onclick = () => {
-			if (this.currentSession === null) {
+	function onSessionEnded() {
+		currentSession.removeEventListener('end', onSessionEnded);
+
+		renderer.vr.setSession(null);
+		renderer.vr.enabled = false;
+		button.textContent = 'ENTER WEBXR';
+
+		currentSession = null;
+	}
+
+	function showEnterXR(device) {
+		if (device) renderer.vr.setDevice(device);
+		button.textContent = 'ENTER WEBXR';
+
+		button.onclick = function () {
+			if (currentSession === null) {
 				navigator.xr.requestSession({
 						mode: 'immersive-ar'
 					})
-					.then(this.onSessionStarted);
+					.then(onSessionStarted);
 			} else {
-				this.currentSession.end();
+				currentSession.end();
 			}
 		};
 	}
 
-	showXRNotFound = () => {
-		this.button.textContent = 'WEBXR NOT FOUND';
-		this.renderer.vr.setDevice(null);
+	function showXRNotFound() {
+		button.textContent = 'WEBXR NOT FOUND';
+		renderer.vr.setDevice(null);
+
+		button.onclick = function () {
+			location.href = 'https://github.com/immersive-web/webxr/blob/master/explainer.md';
+		}
 	}
 
-	createButton() {
+	function createButton() {
 		const button = document.createElement('button');
 
 		button.textContent = `ENTER`;
@@ -79,12 +85,16 @@ class WebXR {
 		button.style.left = '50%';
 		button.style.cursor = 'pointer';
 
-		button.onmouseenter = () => button.style.opacity = '1.0';
-		button.onmouseleave = () => button.style.opacity = '0.5';
+		button.onmouseenter = function () {
+			button.style.opacity = '1.0'
+		};
+		button.onmouseleave = function () {
+			button.style.opacity = '0.5'
+		};
 
 		return button;
 	}
 
-	getButton = () => this.button;
-	
+	return button;
+
 }
