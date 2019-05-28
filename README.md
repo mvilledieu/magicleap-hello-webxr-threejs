@@ -7,7 +7,7 @@
 - Make sure to use this [custom build](https://github.com/mvilledieu/three.js/tree/dev/build) in your projects.
 
 To try it out on device open [helio](https://www.magicleap.com/experiences/helio) and go to that link:
-[https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/](https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/)
+[https://mvilledieu.github.io/magicleap-threejs-webxr-hello-world/](https://mvilledieu.github.io/ml-threejs-webxr-hello-world/)
 
 ## local server
 
