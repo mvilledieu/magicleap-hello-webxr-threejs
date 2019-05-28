@@ -13,6 +13,10 @@ To try it out on device open [helio](https://www.magicleap.com/experiences/helio
 
 For local testing you'll need to generate a `cert.pem` and `key.pem` and put them at the root of your folder. http-server needs it to serve your files over https (Required by WebXR).
 
+https://unpkg.com/ml-three/build/three.min.js
+https://unpkg.com/ml-three@/build/three.js
+https://unpkg.com/ml-three@/build/three.module.js
+
 ```sh
 $ openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 $ yarn
