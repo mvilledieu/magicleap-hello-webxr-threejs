@@ -30,6 +30,7 @@
             coneMesh,
             ticker = 0;
         const loader = new THREE.GLTFLoader();
+        const OBJECTS_HEIGHT = 1.5;
 
         init();
         animate();
@@ -42,6 +43,7 @@
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x444444);
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
+            camera.position.y = OBJECTS_HEIGHT;
             scene.add(camera);
 
             renderer = new THREE.WebGLRenderer({
@@ -75,13 +77,15 @@
             const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
             scene.add(hemisphereLight);
 
+            scene.add( new THREE.GridHelper( 8, 8, 0x111111, 0x111111 ) );
+
             const sphereGeo = new THREE.IcosahedronBufferGeometry(0.1, 1);
             const sphereMat = new THREE.MeshPhongMaterial({
                 color: 0xff7500,
                 flatShading: true
             });
             sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
-            sphereMesh.position.set(-0.5, 0, -1);
+            sphereMesh.position.set(-0.5, OBJECTS_HEIGHT, -1);
             scene.add(sphereMesh);
 
             const torusGeo = new THREE.TorusBufferGeometry(0.08, 0.03, 32, 60);
@@ -89,7 +93,7 @@
                 color: 0xf65275
             });
             torusMesh = new THREE.Mesh(torusGeo, torusMat);
-            torusMesh.position.z -= 1;
+            torusMesh.position.set( 0, OBJECTS_HEIGHT, -1);
             scene.add(torusMesh);
 
             const coneGeo = new THREE.ConeBufferGeometry(0.1, 0.2, 8);
@@ -98,7 +102,7 @@
                 flatShading: true
             });
             coneMesh = new THREE.Mesh(coneGeo, coneMat);
-            coneMesh.position.set(0.5, 0, -1);
+            coneMesh.position.set(0.5, OBJECTS_HEIGHT, -1);
             scene.add(coneMesh);
         }
 
