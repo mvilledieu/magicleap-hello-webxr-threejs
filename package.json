@@ -3,7 +3,7 @@
     "description": "Basic hello world",
     "version": "0.0.1",
     "scripts": {
-        "dev": "http-server -S -C cert.pem -o -c-1 -p 3000"
+        "serve": "http-server -S -C cert.pem -o -c-1 -p 3000"
     },
     "dependencies": {
         "http-server": "^0.11.1"

@@ -22,7 +22,7 @@ For local testing you'll need to generate a `cert.pem` and `key.pem` and put the
 ```sh
 $ openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 $ yarn
-$ yarn dev
+$ yarn serve
 ```
 Once you see the `Your connection is not private` message please click on `advanced` and `Proceed to 127.0.0.1 (unsafe)`. 
 
