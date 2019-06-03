@@ -110,7 +110,7 @@
                 wireframe: true,
             });
             const floorMesh = new THREE.Mesh(floorGeo, floorMat);
-            floorMesh.position.set(0, 0, -1.5); // Y = 0, mesh on the floor plane
+            floorMesh.position.set(0, 0, -1); // Y = 0, mesh on the floor plane
             floorMesh.rotation.x = - Math.PI / 2;
             scene.add(floorMesh);
         }
