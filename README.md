@@ -9,7 +9,7 @@ Hello World, made using **three.js r105** together with a ***mandatory*** custom
 
 To try it out on device open [helio](https://www.magicleap.com/experiences/helio) and go to that link:
 
-https://bit.ly/2HT2X2F
+https://bit.ly/2W5W1mJ
   
 
 ## Local server:
