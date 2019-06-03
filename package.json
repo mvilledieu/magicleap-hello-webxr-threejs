@@ -1,6 +1,6 @@
 {
-    "name": "magicleap-webxr-threejs-hello-world",
-    "description": "Basic hello world",
+    "name": "magicleap-threejs-hello-webxr",
+    "description": "Basic Hello WebXR",
     "version": "0.0.1",
     "scripts": {
         "serve": "http-server -S -C cert.pem -o -c-1 -p 3000"

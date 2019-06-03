@@ -2,12 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>MagicLeap three.js WebXR - Hello World</title>
+    <title>Magic Leap Helio - Hello WebXR (three.js)</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script src="https://unpkg.com/ml-three@latest/build/three.min.js"></script>
-    <script src="https://unpkg.com/ml-three@latest/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="./WebXR.js"></script>
+    <script src="./HelioWebXRPolyfill.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/build/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/examples/js/vr/WebVR.js"></script>
     <style>
         body {
             margin: 0px;
@@ -41,7 +42,6 @@
             document.body.appendChild(container);
 
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x444444);
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
             camera.position.y = OBJECTS_HEIGHT;
             scene.add(camera);
@@ -51,6 +51,7 @@
             });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.vr.enabled = true;
             container.appendChild(renderer.domElement);
 
             addMeshes();
@@ -67,7 +68,7 @@
                 }
             );
 
-            document.body.appendChild(WebXR(renderer));
+            document.body.appendChild(WEBVR.createButton(renderer));
 
             window.addEventListener('resize', onWindowResize, false);
         }
@@ -76,8 +77,6 @@
 
             const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
             scene.add(hemisphereLight);
-
-            scene.add( new THREE.GridHelper( 8, 8, 0x111111, 0x111111 ) );
 
             const sphereGeo = new THREE.IcosahedronBufferGeometry(0.1, 1);
             const sphereMat = new THREE.MeshPhongMaterial({
