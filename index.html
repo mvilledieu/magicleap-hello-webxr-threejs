@@ -31,7 +31,7 @@
             coneMesh,
             ticker = 0;
         const loader = new THREE.GLTFLoader();
-        const OBJECTS_HEIGHT = 1.5;
+        const OBJECTS_HEIGHT = 1.8;
 
         init();
         animate();
@@ -43,7 +43,6 @@
 
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
-            camera.position.y = OBJECTS_HEIGHT;
             scene.add(camera);
 
             renderer = new THREE.WebGLRenderer({
@@ -103,6 +102,16 @@
             coneMesh = new THREE.Mesh(coneGeo, coneMat);
             coneMesh.position.set(0.5, OBJECTS_HEIGHT, -1);
             scene.add(coneMesh);
+
+            const floorGeo = new THREE.PlaneBufferGeometry(2, 1, 5, 5);
+            const floorMat = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                wireframe: true,
+            });
+            floorMesh = new THREE.Mesh(floorGeo, floorMat);
+            floorMesh.position.set(0, 0, -1.5); // Y = 0, mesh on the floor plane
+            floorMesh.rotation.x = - Math.PI / 2;
+            scene.add(floorMesh);
         }
 
         function onSelect() {
