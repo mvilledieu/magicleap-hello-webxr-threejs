@@ -5,7 +5,7 @@
     <title>Magic Leap Helio - Hello WebXR (three.js)</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script src="./HelioWebXRPolyfill.js"></script>
+    <script src="https://unpkg.com/magicleap-helio-webxr-polyfill@1.0.0/HelioWebXRPolyfill"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/build/three.min.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r105/examples/js/vr/WebVR.js"></script>
@@ -105,7 +105,7 @@
             scene.add(coneMesh);
 
             const floorGeo = new THREE.PlaneBufferGeometry(2, 1, 5, 5);
-            const floorMat = new THREE.MeshPhongMaterial({
+            const floorMat = new THREE.MeshBasicMaterial({
                 color: 0xffffff,
                 wireframe: true,
             });
