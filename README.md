@@ -1,6 +1,6 @@
 #  Magic Leap Helio - Hello WebXR (three.js)
  
-Hello World, made using **three.js r105** together with a ***mandatory*** custom `HelioWebXRPolyfill.js` wrote to add compatibility to three.js to the older version of the WebXR API used by Helio (Based on chrome m73).
+Hello World, made using **three.js r106** together with a ***mandatory*** custom `HelioWebXRPolyfill.js` wrote to add compatibility to three.js to the older version of the WebXR API used by Helio.
 
 
 ## Try "Hello WebXR" on device:
